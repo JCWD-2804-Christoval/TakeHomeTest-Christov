@@ -1,0 +1,43 @@
+.container {
+    padding: 20px;
+  }
+  
+  h1, h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  input, select {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .order-summary {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+  }
+  
+  .order-summary div {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+  }
+  

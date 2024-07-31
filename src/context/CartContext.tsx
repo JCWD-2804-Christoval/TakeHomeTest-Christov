@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 import { Drug } from '../types';
 
 interface CartItem {
@@ -11,6 +11,7 @@ interface CartContextProps {
   addToCart: (drug: Drug) => void;
   removeFromCart: (drugId: number) => void;
   updateQuantity: (drugId: number, quantity: number) => void;
+  children?: ReactNode; // Added this line to fix children issues
 }
 
 export const CartContext = createContext<CartContextProps>({
@@ -20,7 +21,7 @@ export const CartContext = createContext<CartContextProps>({
   updateQuantity: () => {},
 });
 
-export const CartProvider: React.FC = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = (drug: Drug) => {
@@ -40,10 +41,9 @@ export const CartProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity }}
-    >
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity }}>
       {children}
     </CartContext.Provider>
   );
 };
+

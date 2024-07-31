@@ -1,9 +1,10 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
 
 interface AuthContextProps {
   user: string | null;
   login: (user: string) => void;
   logout: () => void;
+  children?: ReactNode; // Added this line to fix 'children' issues
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -12,7 +13,7 @@ export const AuthContext = createContext<AuthContextProps>({
   logout: () => {},
 });
 
-export const AuthProvider: React.FC = ({ children }) => {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<string | null>(null);
 
   const login = (user: string) => {
@@ -29,3 +30,4 @@ export const AuthProvider: React.FC = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+

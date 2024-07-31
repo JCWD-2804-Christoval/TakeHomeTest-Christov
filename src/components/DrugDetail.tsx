@@ -1,31 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React from 'react';
 import { Drug } from '../types';
-import '../assets/styles/DrugDetail.css';
 
-const DrugDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const [drug, setDrug] = useState<Drug | null>(null);
-  const navigate = useNavigate();
+interface DrugDetailProps {
+  drug: Drug;
+  onAddToCart: () => void;
+}
 
-  useEffect(() => {
-    fetch(`http://localhost:3000/drugs/${id}`)
-      .then((response) => response.json())
-      .then((data) => setDrug(data))
-      .catch((error) => console.error('Error fetching drug:', error));
-  }, [id]);
-
-  if (!drug) {
-    return <div>Loading...</div>;
-  }
-
+const DrugDetail: React.FC<DrugDetailProps> = ({ drug, onAddToCart }) => {
   return (
-    <div className="container">
-      <h1>{drug.name}</h1>
+    <div className="drug-detail">
+      <h2>{drug.name}</h2>
       <p>{drug.description}</p>
       <p>Price: ${drug.price}</p>
-      <button onClick={() => navigate('/cart')}>Add to Cart</button>
-      <button onClick={() => navigate('/')}>Back to Home</button>
+      <button onClick={onAddToCart}>Add to Cart</button>
     </div>
   );
 };

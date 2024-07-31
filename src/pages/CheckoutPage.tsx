@@ -1,5 +1,3 @@
-// src/pages/CheckoutPage.tsx
-
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Checkout from '../components/Checkout';
@@ -9,7 +7,7 @@ import { Order } from '../types';
 import '../assets/styles/Checkout.css';
 
 const CheckoutPage: React.FC = () => {
-  const { cartItems, clearCart } = useContext(CartContext);
+  const { cartItems, clearCart } = useContext(CartContext)!;
   const [shippingAddress, setShippingAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const navigate = useNavigate();
@@ -19,7 +17,7 @@ const CheckoutPage: React.FC = () => {
       const order: Order = {
         id: Date.now(),
         items: cartItems,
-        totalAmount: cartItems.reduce((total, item) => total + item.price * item.quantity, 0),
+        totalAmount: cartItems.reduce((total, item) => total + item.drug.price * item.quantity, 0),
         shippingAddress,
         paymentMethod,
         status: 'Pending',
@@ -48,4 +46,3 @@ const CheckoutPage: React.FC = () => {
 };
 
 export default CheckoutPage;
-

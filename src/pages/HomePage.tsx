@@ -1,34 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import DrugCard from '../components/DrugCard';
+import { fetchDrugs } from '../services/api';
 import { Drug } from '../types';
+import '../assets/styles/Home.css';
 
 const HomePage: React.FC = () => {
   const [drugs, setDrugs] = useState<Drug[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/drugs')
-      .then((response) => response.json())
-      .then((data) => setDrugs(data));
+    const loadDrugs = async () => {
+      try {
+        const drugsData = await fetchDrugs();
+        setDrugs(drugsData);
+      } catch (error) {
+        console.error('Error fetching drugs:', error);
+      }
+    };
+
+    loadDrugs();
   }, []);
 
-  const filteredDrugs = drugs.filter((drug) =>
-    drug.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search drugs..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-      <div>
-        {filteredDrugs.map((drug) => (
-          <Link key={drug.id} to={`/drug/${drug.id}`}>
-            <div>{drug.name}</div>
-          </Link>
+    <div className="home-page">
+      <h1>Drug Catalog</h1>
+      <div className="drug-catalog">
+        {drugs.map((drug) => (
+          <DrugCard key={drug.id} drug={drug} />
         ))}
       </div>
     </div>

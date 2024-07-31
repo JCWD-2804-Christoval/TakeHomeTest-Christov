@@ -1,54 +1,51 @@
+// src/pages/CheckoutPage.tsx
+
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Checkout from '../components/Checkout';
 import { CartContext } from '../context/CartContext';
+import { placeOrder } from '../services/api';
+import { Order } from '../types';
+import '../assets/styles/Checkout.css';
 
 const CheckoutPage: React.FC = () => {
-  const { cart } = useContext(CartContext);
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [payment, setPayment] = useState('');
+  const { cartItems, clearCart } = useContext(CartContext);
+  const [shippingAddress, setShippingAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const navigate = useNavigate();
 
-  const handleCheckout = () => {
-    alert('Order placed successfully!');
+  const handlePlaceOrder = async () => {
+    try {
+      const order: Order = {
+        id: Date.now(),
+        items: cartItems,
+        totalAmount: cartItems.reduce((total, item) => total + item.price * item.quantity, 0),
+        shippingAddress,
+        paymentMethod,
+        status: 'Pending',
+      };
+      await placeOrder(order);
+      clearCart();
+      navigate('/order-confirmation');
+    } catch (error) {
+      console.error('Error placing order:', error);
+    }
   };
 
   return (
-    <div>
-      <h2>Checkout</h2>
-      <div>
-        {cart.map((item) => (
-          <div key={item.drug.id}>
-            <p>{item.drug.name}</p>
-            <p>Quantity: {item.quantity}</p>
-          </div>
-        ))}
-      </div>
-      <div>
-        <h3>Shipping Information</h3>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </div>
-      <div>
-        <h3>Payment Information</h3>
-        <input
-          type="text"
-          placeholder="Payment Details"
-          value={payment}
-          onChange={(e) => setPayment(e.target.value)}
-        />
-      </div>
-      <button onClick={handleCheckout}>Place Order</button>
+    <div className="checkout-page">
+      <h1>Checkout</h1>
+      <Checkout
+        cartItems={cartItems}
+        shippingAddress={shippingAddress}
+        setShippingAddress={setShippingAddress}
+        paymentMethod={paymentMethod}
+        setPaymentMethod={setPaymentMethod}
+        placeOrder={handlePlaceOrder}
+      />
     </div>
   );
 };
 
 export default CheckoutPage;
+

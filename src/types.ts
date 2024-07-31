@@ -6,6 +6,18 @@ export interface Drug {
 }
 
 export interface CartItem {
-    drug: Drug;
+    id: number;
+    drugId: number;
+    name: string;
+    price: number;
     quantity: number;
-}
+  }
+  
+  export interface Order {
+    id: number;
+    items: CartItem[];
+    totalAmount: number;
+    shippingAddress: string;
+    paymentMethod: string;
+    status: string;
+  }

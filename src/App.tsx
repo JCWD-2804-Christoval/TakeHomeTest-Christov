@@ -1,31 +1,29 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/Home';
-import Login from './components/Login';
-import DrugDetail from './components/DrugDetail';
-import Cart from './components/Cart';
-import Checkout from './components/Checkout';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import AuthPage from './pages/AuthPage';
+import HomePage from './pages/HomePage';
+import DrugDetailPage from './pages/DrugDetailPage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
-import './assets/styles/App.css';
+import './App.css';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <AuthProvider>
-        <CartProvider>
-          <div className="app-container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/drug/:id" element={<DrugDetail />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-            </Routes>
-          </div>
-        </CartProvider>
-      </AuthProvider>
-    </Router>
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/drug/:id" element={<DrugDetailPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+          </Routes>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 };
 
